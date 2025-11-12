@@ -27,9 +27,7 @@ export default function MainLayout() {
         <div className="p-5 space-y-6">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-full bg-white text-black grid place-items-center font-black">
-              ♫
-            </div>
+            <img src="/spotify-logo.png" alt="Spotify" className="h-8 w-8 invert" />
             <span className="text-xl font-semibold">Spotify</span>
           </div>
 
