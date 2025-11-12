@@ -1,4 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import { useState } from 'react'
 import { useMe } from '@features/user/hooks/useMe'
 import { useAuth } from '@shared/stores/authStore'
 import Button from '@shared/components/Button'
@@ -18,11 +19,11 @@ export default function MainLayout() {
   const { data: me, isLoading } = useMe()
   const logout = useLogout()
   const { canInstall, install } = usePWAInstallPrompt()
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  return (
-    <div className="min-h-screen bg-black flex">
-      {/* Sidebar */}
-      <aside className="w-60 shrink-0 bg-[#0f0f0f] text-white flex flex-col justify-between">
+  function SidebarContent() {
+    return (
+      <>
         <div className="p-5 space-y-6">
           {/* Logo */}
           <div className="flex items-center gap-2">
@@ -90,10 +91,55 @@ export default function MainLayout() {
             </div>
           )}
         </div>
+      </>
+    )
+  }
+
+  return (
+    <div className="min-h-screen bg-black flex">
+      {/* Sidebar - Desktop */}
+      <aside className="hidden md:flex w-60 shrink-0 bg-[#0f0f0f] text-white flex-col justify-between">
+        <SidebarContent />
       </aside>
+
+      {/* Sidebar - Mobile Drawer */}
+      <aside
+        className={[
+          'md:hidden fixed inset-y-0 left-0 z-50 w-60 bg-[#0f0f0f] text-white flex flex-col justify-between transform transition-transform',
+          isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        ].join(' ')}
+        role="dialog"
+        aria-modal="true"
+        aria-hidden={!isMenuOpen}
+      >
+        <SidebarContent />
+      </aside>
+      {isMenuOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-40 bg-black/60"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
 
       {/* Content Area */}
       <main className="flex-1 bg-black">
+        {/* Mobile header */}
+        <div className="md:hidden sticky top-0 z-20 bg-black/80 backdrop-blur-sm border-b border-neutral-800">
+          <div className="flex items-center justify-between p-4">
+            <button
+              onClick={() => setIsMenuOpen((s) => !s)}
+              className="h-10 w-10 grid place-items-center rounded-md bg-white/10 text-white"
+              aria-label="Abrir menu"
+            >
+              {/* ícone hambúrguer */}
+              <span className="block w-5 h-0.5 bg-white mb-1" />
+              <span className="block w-5 h-0.5 bg-white mb-1" />
+              <span className="block w-5 h-0.5 bg-white" />
+            </button>
+            <span className="text-sm text-white/80">Menu</span>
+            <div className="h-10 w-10" />
+          </div>
+        </div>
         <Outlet />
       </main>
     </div>

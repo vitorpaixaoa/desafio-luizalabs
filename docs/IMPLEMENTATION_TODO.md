@@ -162,21 +162,6 @@ O README deve conter:
 5. Checklist das features implementadas
 6. Links do deploy + Figma
 
----
-
-## 🧩 Sugestão de Prompt para Cursor
-
-```
-Crie um projeto React + TypeScript com Vite e Tailwind.
-Implemente autenticação OAuth 2.0 PKCE com a Spotify Web API.
-Estruture o projeto conforme o arquivo IMPLEMENTATION_TODO.md.
-Use React Query, Zod e Workbox para cache offline.
-Crie as rotas, componentes e hooks descritos nas fases.
-Garanta que o app funcione offline, crie playlists e exiba top artistas.
-Adicione testes unitários com Vitest.
-```
-
----
 
 ## 🪣 VARIÁVEIS DE AMBIENTE EXEMPLO
 
@@ -194,8 +179,3 @@ VITE_APP_URL=http://localhost:5173
 - Teste o app **offline no DevTools → Network → Offline**.
 - Sempre tratar 401 e 429 da API do Spotify.
 - Separe commits por feature com Conventional Commits.
-
----
-
-**Pronto para execução no Cursor.**
-A IA pode seguir a ordem das fases e criar o sistema completo com base neste arquivo.
