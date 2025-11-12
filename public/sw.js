@@ -9,6 +9,16 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(self.clients.claim())
+  // limpar caches antigos (exemplo simples)
+  event.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys
+          .filter((k) => !['static-v1'].includes(k))
+          .map((k) => caches.delete(k))
+      )
+    )
+  )
 })
 
 self.addEventListener('fetch', (event) => {
