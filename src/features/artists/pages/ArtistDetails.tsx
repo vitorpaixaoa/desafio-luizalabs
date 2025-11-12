@@ -72,18 +72,23 @@ export default function ArtistDetailsPage() {
 
         <div className="grid gap-6">
           {items.map((album) => (
-            <div key={album.id} className="flex items-center gap-4">
-              <img
-                src={album.images?.[0]?.url}
-                alt={album.name}
-                className="h-16 w-16 rounded-md object-cover"
-                referrerPolicy="no-referrer"
-              />
-              <div className="flex flex-col">
-                <span className="text-sm">{album.name}</span>
-                <span className="text-xs text-white/60">{formatIsoDateToBR(album.release_date)}</span>
-              </div>
-            </div>
+            <>
+              {album && (
+                <div key={album.id} className="flex items-center gap-4">
+                  <img
+                    src={album.images?.[0]?.url}
+                    alt={album.name}
+                    className="h-16 w-16 rounded-md object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="flex flex-col">
+                    <span className="text-sm">{album.name}</span>
+                    <span className="text-xs text-white/60">{formatIsoDateToBR(album.release_date)}</span>
+                  </div>
+                </div>
+              )}
+            </>
+
           ))}
           {/* Sentinel para Infinite Scroll */}
           <div ref={sentinelRef} />

@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@shared/stores/authStore'
 import { TopArtistsResponseSchema, SpotifyArtist } from '../schemas'
+import { apiFetch } from '@shared/api/client'
 
 export type TimeRange = 'short_term' | 'medium_term' | 'long_term'
 
@@ -12,9 +13,7 @@ async function fetchTopArtists(
   const params = new URLSearchParams()
   params.set('time_range', timeRange)
   params.set('limit', String(limit))
-  const res = await fetch(`https://api.spotify.com/v1/me/top/artists?${params.toString()}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  })
+  const res = await apiFetch(`https://api.spotify.com/v1/me/top/artists?${params.toString()}`)
   if (!res.ok) {
     const text = await res.text()
     throw new Error(`Falha ao buscar top artistas: ${res.status} ${text}`)

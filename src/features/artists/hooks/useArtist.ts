@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@shared/stores/authStore'
 import { z } from 'zod'
+import { apiFetch } from '@shared/api/client'
 
 const ArtistSchema = z.object({
   id: z.string(),
@@ -19,9 +20,7 @@ const ArtistSchema = z.object({
 export type Artist = z.infer<typeof ArtistSchema>
 
 async function fetchArtist(token: string, id: string): Promise<Artist> {
-  const res = await fetch(`https://api.spotify.com/v1/artists/${id}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  })
+  const res = await apiFetch(`https://api.spotify.com/v1/artists/${id}`)
   if (!res.ok) {
     const text = await res.text()
     throw new Error(`Falha ao buscar artista: ${res.status} ${text}`)

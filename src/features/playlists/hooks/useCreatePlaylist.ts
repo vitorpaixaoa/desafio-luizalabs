@@ -39,31 +39,28 @@ export function useCreatePlaylist() {
     mutationFn: (payload: CreatePayload) => createPlaylistRequest(token!, payload),
     onSuccess: (created) => {
       // Atualiza otimistamente a primeira página das playlists, colocando a nova no topo
-      queryClient.setQueriesData(
-        { queryKey: ['user-playlists'] },
-        (oldData: InfiniteData<ReturnType<typeof PlaylistsResponseSchema.parse>> | undefined) => {
-          if (!oldData) return oldData
-          const simplified = {
-            id: created.id as string,
-            name: created.name as string,
-            images: (created.images ?? null) as unknown,
-            owner: { display_name: created?.owner?.display_name ?? null },
-            tracks: { total: created?.tracks?.total ?? 0 }
-          }
-          return {
-            ...oldData,
-            pages: oldData.pages.map((page, idx) =>
-              idx === 0
-                ? {
-                    ...page,
-                    items: [simplified as any, ...page.items],
-                    total: (page.total ?? 0) + 1
-                  }
-                : page
-            )
-          }
+      queryClient.setQueriesData({ queryKey: ['user-playlists'] }, (oldData: any) => {
+        if (!oldData) return oldData
+        const simplified = {
+          id: created.id as string,
+          name: created.name as string,
+          images: created.images ?? null,
+          owner: { display_name: created?.owner?.display_name ?? null },
+          tracks: { total: created?.tracks?.total ?? 0 }
         }
-      )
+        return {
+          ...oldData,
+          pages: oldData.pages.map((page: any, idx: number) =>
+            idx === 0
+              ? {
+                  ...page,
+                  items: [simplified, ...(page.items ?? [])],
+                  total: (page.total ?? 0) + 1
+                }
+              : page
+          )
+        }
+      })
       // Também invalida para garantir sincronização com backend
       void queryClient.invalidateQueries({ queryKey: ['user-playlists'] })
     }

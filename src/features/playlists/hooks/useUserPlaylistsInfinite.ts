@@ -1,14 +1,13 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useAuth } from '@shared/stores/authStore'
 import { PlaylistsResponseSchema } from '../schemas'
+import { apiFetch } from '@shared/api/client'
 
 async function fetchPlaylistsPage(token: string, limit: number, offset: number) {
   const params = new URLSearchParams()
   params.set('limit', String(limit))
   params.set('offset', String(offset))
-  const res = await fetch(`https://api.spotify.com/v1/me/playlists?${params.toString()}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  })
+  const res = await apiFetch(`https://api.spotify.com/v1/me/playlists?${params.toString()}`)
   if (!res.ok) {
     const text = await res.text()
     throw new Error(`Falha ao buscar playlists: ${res.status} ${text}`)

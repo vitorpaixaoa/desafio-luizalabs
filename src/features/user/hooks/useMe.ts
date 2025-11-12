@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useAuth } from '@shared/stores/authStore'
+import { apiFetch } from '@shared/api/client'
 
 export type SpotifyUser = {
   id: string
@@ -10,11 +11,7 @@ export type SpotifyUser = {
 }
 
 async function fetchMe(token: string): Promise<SpotifyUser> {
-  const res = await fetch('https://api.spotify.com/v1/me', {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
+  const res = await apiFetch('https://api.spotify.com/v1/me')
   if (!res.ok) {
     const text = await res.text()
     throw new Error(`Falha ao buscar perfil: ${res.status} ${text}`)

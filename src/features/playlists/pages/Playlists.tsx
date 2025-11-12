@@ -67,7 +67,7 @@ export default function PlaylistsPage() {
 
           {isError && <div className="text-sm text-red-400">{(error as Error)?.message}</div>}
 
-          {items.map((pl) => (
+          { items && items?.map((pl: any) => (
             <div key={pl.id} className="flex items-center gap-4">
               {pl.images?.[0]?.url ? (
                 <img

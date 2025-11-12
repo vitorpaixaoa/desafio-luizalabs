@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useAuth } from '@shared/stores/authStore'
 import { z } from 'zod'
+import { apiFetch } from '@shared/api/client'
 
 export const SimplifiedAlbumSchema = z.object({
   id: z.string(),
@@ -19,7 +20,7 @@ export const SimplifiedAlbumSchema = z.object({
 })
 
 const AlbumsResponseSchema = z.object({
-  items: z.array(SimplifiedAlbumSchema),
+  items: z.array(SimplifiedAlbumSchema).nullable().optional(),
   total: z.number(),
   limit: z.number(),
   offset: z.number(),
@@ -40,11 +41,8 @@ async function fetchArtistAlbumsPage(
   params.set('include_groups', includeGroups)
   params.set('limit', String(limit))
   params.set('offset', String(offset))
-  const res = await fetch(
-    `https://api.spotify.com/v1/artists/${artistId}/albums?${params.toString()}`,
-    {
-      headers: { Authorization: `Bearer ${token}` }
-    }
+  const res = await apiFetch(
+    `https://api.spotify.com/v1/artists/${artistId}/albums?${params.toString()}`
   )
   if (!res.ok) {
     const text = await res.text()

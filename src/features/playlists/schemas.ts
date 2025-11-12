@@ -21,7 +21,7 @@ export const SimplifiedPlaylistSchema = z.object({
 })
 
 export const PlaylistsResponseSchema = z.object({
-  items: z.array(SimplifiedPlaylistSchema),
+  items: z.array(SimplifiedPlaylistSchema).nullable().optional(),
   limit: z.number(),
   offset: z.number(),
   total: z.number(),
